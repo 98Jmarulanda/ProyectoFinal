@@ -10,4 +10,6 @@ public class BackendOdontologiaApplication {
 		SpringApplication.run(BackendOdontologiaApplication.class, args);
 	}
 
+	
+
 }
