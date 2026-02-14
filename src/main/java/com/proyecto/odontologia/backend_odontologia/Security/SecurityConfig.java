@@ -50,6 +50,10 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.POST, "/login").permitAll()
         .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+        .requestMatchers(HttpMethod.GET, "/citas").permitAll()
+        .requestMatchers(HttpMethod.PUT, "/citas/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.POST, "/citas/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/citas/**").hasAuthority("ROLE_ADMIN")
         .anyRequest().authenticated())
         .addFilter(authenticationFilter)
         .addFilter(new JwtValidationFilter(authenticationManager()))
@@ -58,28 +62,6 @@ public class SecurityConfig {
         .sessionManagement(managment -> managment.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .build();
     }
-
-    // @Bean
-    // SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-    //     // Filtro real de login
-    //     JwtAuthenticationFilter authenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-    //     authenticationFilter.setFilterProcessesUrl("/login");
-
-    //     return http
-    //         .authorizeHttpRequests(authz -> authz
-    //             .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
-    //             .requestMatchers(HttpMethod.POST, "/login").permitAll()
-    //             .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
-    //             .anyRequest().authenticated()
-    //         )
-    //         .addFilter(authenticationFilter) // <-- ESTE sí
-    //         .addFilter(new JwtValidationFilter(authenticationManager()))
-    //         .csrf(csrf -> csrf.disable())
-    //         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-    //         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    //         .build();
-    // }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(){

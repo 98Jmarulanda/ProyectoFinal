@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.odontologia.backend_odontologia.Validation.ExistByEmail;
 
+// import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,10 +16,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -40,6 +43,7 @@ public class User {
     @Size(min = 10, max = 10)
     private String phone;
 
+    @Email
     @ExistByEmail
     @NotBlank
     @Column(unique = true)
@@ -61,9 +65,9 @@ public class User {
     )
     private List<Role> roles;
 
-    public User(){
-        roles = new ArrayList<>();
-    }
+    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    // private List<Cita> citas;
+
 
     /*Transient Se utiliza cuando no es un campo de la base de datos, sino un atributo de la clase*/
     @Transient
@@ -81,6 +85,23 @@ public class User {
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String adminCode;
+
+
+    public User(){
+        roles = new ArrayList<>();
+        // citas = new ArrayList<>();
+    }
+
+    // public User(@NotBlank String name, @NotBlank String lastname, @NotBlank @Size(min = 10, max = 10) String phone,
+    //         @Email @NotBlank String email, @NotBlank @Size(min = 5) String password) {
+    //     this();
+    //     this.name = name;
+    //     this.lastname = lastname;
+    //     this.phone = phone;
+    //     this.email = email;
+    //     this.password = password;
+    // }
+
 
     public Long getId() {
         return id;
@@ -162,6 +183,15 @@ public class User {
         this.adminCode = adminCode;
     }
 
+    // public List<Cita> getCitas() {
+    //     return citas;
+    // }
+
+    // public void setCitas(List<Cita> citas) {
+    //     this.citas = citas;
+    // }
+    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -192,6 +222,8 @@ public class User {
             return false;
         return true;
     }
+
+
 
     
 }
