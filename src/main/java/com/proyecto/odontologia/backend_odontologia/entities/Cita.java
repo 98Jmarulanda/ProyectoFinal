@@ -1,11 +1,17 @@
 package com.proyecto.odontologia.backend_odontologia.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 // import jakarta.persistence.JoinColumn;
 // import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -31,22 +37,13 @@ public class Cita {
 
     private LocalDateTime dateTime;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id")
-    // private User user;
+    @JsonIgnoreProperties({"cita", "handler", "hibernateLazyInitializer"})
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserCita> userCita;
 
-    
-
-    // public Cita(@NotBlank(message = "El nombre no puede estar vacio") String name, @NotNull Integer price,
-    //         @NotBlank(message = "La descripcion no puede estar vacio") String description, LocalDateTime dateTime) {
-    //     this.name = name;
-    //     this.price = price;
-    //     this.description = description;
-    //     this.dateTime = dateTime;
-    // }
-
-    // public Cita() {
-    // }
+    public Cita() {
+        userCita = new ArrayList<>();
+    }
 
 
     public Long getId() {
@@ -80,13 +77,15 @@ public class Cita {
         this.dateTime = dateTime;
     }
 
-    // public User getUser() {
-    //     return user;
-    // }
+    public List<UserCita> getUserCita() {
+        return userCita;
+    }
 
-    // public void setUser(User user) {
-    //     this.user = user;
-    // }
+
+    public void setUserCita(List<UserCita> userCita) {
+        this.userCita = userCita;
+    }
+
     
     
 

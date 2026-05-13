@@ -47,13 +47,16 @@ public class SecurityConfig {
         authenticationFilter.setFilterProcessesUrl("/login");
         
         return http.authorizeHttpRequests( (authz) -> authz
-        .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+        .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.GET, "/users/lista").hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
         .requestMatchers(HttpMethod.GET, "/citas").permitAll()
         .requestMatchers(HttpMethod.PUT, "/citas/**").hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.POST, "/citas/**").hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.DELETE, "/citas/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.GET, "/reserva/agenda").hasAnyAuthority("ROLE_ADMIN")
         .anyRequest().authenticated())
         .addFilter(authenticationFilter)
         .addFilter(new JwtValidationFilter(authenticationManager()))

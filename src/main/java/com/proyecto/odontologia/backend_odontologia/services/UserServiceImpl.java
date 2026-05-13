@@ -1,5 +1,6 @@
 package com.proyecto.odontologia.backend_odontologia.services;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,43 @@ public class UserServiceImpl implements UserService{
     public boolean existsByEmail(String email) {
 
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public Optional<User> update(Long id, User user) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            User userDb = optionalUser.orElseThrow();
+            userDb.setName(user.getName());
+            userDb.setLastname(user.getLastname());
+            userDb.setPhone(user.getPhone());
+            userDb.setEmail(user.getEmail());
+            return Optional.of(userRepository.save(userDb));
+        }
+        return optionalUser;
+
+    }
+
+    @Override
+    @Transactional
+    public Optional<User> delete(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        userOptional.ifPresent(userDB -> {
+            userRepository.delete(userDB);
+        });
+        return userOptional;
     }
 
 }

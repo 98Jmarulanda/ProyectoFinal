@@ -32,7 +32,7 @@ public class CitaSerivceImpl implements CitaService{
     @Transactional
     public Cita save(Cita cita) {
         return citaRepository.save(cita);
-    }
+    }   
 
     @Override
     @Transactional
